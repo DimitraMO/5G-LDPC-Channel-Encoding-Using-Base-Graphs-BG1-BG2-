@@ -16,8 +16,6 @@ for snrdB=1:1:10
     errored_frames=0;
     errored_bits=0;
 
-    %   num_of_dif_elements=0;
-
     for i = 1:Kfs_cols
         kf = matrix_of_Kfs(:, i);
         [B, Kcb, L, C, B_tonos, K_tonos, Kb, Zc, size_of_K, size_of_N, filler, ils, sheet, K, H_new, P_row, P_col, m, n, k] = ldpc_find_parameters(kf, BG);
@@ -25,9 +23,7 @@ for snrdB=1:1:10
         c=mod(K*G,2);
         codeword_length=size_of_K/rate;
 
-        %Left (and right) side bit puncturing and bit shortening
         transmitted=c(1,[(2*Zc)+1:K_tonos , size_of_K+1:codeword_length+2*Zc]);
-        % transmitted=c(1,(2*Zc)+1:codeword_length+2*Zc);
 
         modulated_segments=((2*transmitted)-1)*2;
 
@@ -86,9 +82,6 @@ for snrdB=1:1:10
 
     end
 
-    % rx = rx(1:end-excess_bits); %και στην 2η rx να ερθω και να βαλω εστω f δλδ --> rx=a(1:end-excess_bits)
-    % rx=rx(:);
-    % errored_bits = sum(initial_message~=rx);
     BER(snrdB) = errored_bits/numel(initial_message);
     FER(snrdB)=errored_frames/num_of_columns;
     disp(BER);
